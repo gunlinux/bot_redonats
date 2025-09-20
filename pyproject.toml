@@ -1,0 +1,62 @@
+[project]
+name = "rebot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "marshmallow>=3.26.1",
+    "marshmallow-enum>=1.5.1",
+    "pyright>=1.1.398",
+    "python-dotenv>=1.0.1",
+    "python-socketio>=5.11.4",
+    "sentry-sdk==0.10.2",
+    "aiohttp>=3.12.15",
+    "requeue>=0.2.5",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.7.4",
+    "pytest>=8.3.3",
+    "pytest-asyncio>=0.25.3",
+    "pyright>=1.1.398",
+]
+
+[tool.ruff.lint]
+# 1. Enable flake8-bugbear (`B`) rules, in addition to the defaults.
+select = ["ALL"]
+
+# 2. Avoid enforcing line-length violations (`E501`)
+ignore = ["E501", "Q000", "D", "DTZ005", "SIM117", "ANN", "I001", "S101", "T201", "COM812", "Q003", "EM101"]
+
+# 3. Avoid trying to fix flake8-bugbear (`B`) violations.
+unfixable = ["B"]
+
+# 4. Ignore `E402` (import violations) in all `__init__.py` files, and in selected subdirectories.
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402"]
+"**/{tests,docs,tools}/*" = ["E402"]
+
+[tool.ruff.format]
+# 5. Use single quotes in `ruff format`.
+quote-style = "single"
+
+[tool.mypy]
+warn_return_any = false
+warn_unused_configs = false
+ignore_missing_imports = true
+check_untyped_defs = true
+
+[tool.pyright]
+ignore = ["tests"]
+reportOptionalCall = false
+reportUnusedCallResult = false
+# enable?
+reportUnannotatedClassAttribute = false
+reportExplicitAny = false
+reportAny = false
+
+[tool.uv.sources]
+requeue = { git = "https://github.com/gunlinux/requeue" }
+

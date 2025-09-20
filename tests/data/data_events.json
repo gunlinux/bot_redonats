@@ -1,0 +1,340 @@
+[
+  {
+    "metadata":{
+      "message_id":"IlpGLEtdMcQQK0Wh8pEMh7f-sHnis77ixSlI9BtBg1o=",
+      "message_type":"notification",
+      "message_timestamp":"2025-07-06T14:17:31.061622721Z",
+      "subscription_type":"channel.chat.message",
+      "subscription_version":"1"
+    },
+    "payload":{
+      "subscription":{
+        "id":"bf075001-34d8-44c2-b7d3-865a5b12b8af",
+        "status":"enabled",
+        "type":"channel.chat.message",
+        "version":"1",
+        "condition":{
+          "broadcaster_user_id":"29122457",
+          "user_id":"650749016"
+        },
+        "transport":{
+          "method":"websocket",
+          "session_id":"AgoQA9Eeagw9RZGbPujnUtkxOBIGY2VsbC1j"
+        },
+        "created_at":"2025-07-06T14:17:21.609873115Z",
+        "cost":0
+      },
+      "event":{
+        "broadcaster_user_id":"29122457",
+        "broadcaster_user_login":"gunlinux",
+        "broadcaster_user_name":"gunlinux",
+        "source_broadcaster_user_id":null,
+        "source_broadcaster_user_login":null,
+        "source_broadcaster_user_name":null,
+        "chatter_user_id":"479267041",
+        "chatter_user_login":"theg4ns",
+        "chatter_user_name":"theG4NS",
+        "message_id":"cbee810c-29c8-4365-a320-eff03f7ddb05",
+        "source_message_id":null,
+        "is_source_only":null,
+        "message":{
+          "text":"auf",
+          "fragments":[
+            {
+              "type":"text",
+              "text":"auf",
+              "cheermote":null,
+              "emote":null,
+              "mention":null
+            }
+          ]
+        },
+        "color":"#DAA520",
+        "badges":[
+        ],
+        "source_badges":null,
+        "message_type":"text",
+        "cheer":null,
+        "reply":null,
+        "channel_points_custom_reward_id":null,
+        "channel_points_animation_id":null
+      }
+    }
+  },
+  {
+    "metadata": {
+        "message_id": "84c1e79a-2a4b-4c13-ba0b-4312293e9308",
+        "message_type": "session_keepalive",
+        "message_timestamp": "2023-07-19T10:11:12.634234626Z"
+    },
+    "payload": {}
+  },
+  {
+    "metadata": {
+      "message_id": "96a3f3b5-5dec-4eed-908e-e11ee657416c",
+      "message_type": "session_welcome",
+      "message_timestamp": "2023-07-19T14:56:51.634234626Z"
+    },
+    "payload": {
+      "session": {
+        "id": "AQoQILE98gtqShGmLD7AM6yJThAB",
+        "status": "connected",
+        "connected_at": "2023-07-19T14:56:51.616329898Z",
+        "keepalive_timeout_seconds": 10,
+        "reconnect_url": null
+      }
+    }
+  },
+  {
+    "metadata": {
+        "message_id": "84c1e79a-2a4b-4c13-ba0b-4312293e9308",
+        "message_type": "session_reconnect",
+        "message_timestamp": "2022-11-18T09:10:11.634234626Z"
+    },
+    "payload": {
+        "session": {
+           "id": "AQoQexAWVYKSTIu4ec_2VAxyuhAB",
+           "status": "reconnecting",
+           "keepalive_timeout_seconds": null,
+           "reconnect_url": "wss://eventsub.wss.twitch.tv?...",
+           "connected_at": "2022-11-16T10:11:12.634234626Z"
+        }
+    }
+  },
+  {
+
+    "metadata": {
+        "message_id": "84c1e79a-2a4b-4c13-ba0b-4312293e9308",
+        "message_type": "revocation",
+        "message_timestamp": "2022-11-16T10:11:12.464757833Z",
+        "subscription_type": "automod.message.hold",
+        "subscription_version": "1"
+    },
+    "payload": {
+        "subscription": {
+            "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+            "status": "authorization_revoked",
+            "type": "automod.message.hold",
+            "version": "1",
+            "cost": 1,
+            "condition": {
+                "broadcaster_user_id": "12826"
+            },
+            "transport": {
+                "method": "websocket",
+                "session_id": "AQoQexAWVYKSTIu4ec_2VAxyuhAB"
+            },
+            "created_at": "2022-11-16T10:11:12.464757833Z"
+        }
+    }
+  },
+  {
+    "metadata": {
+      "message_id": "U20doGe5ImtBMh1xeU1WMRkuni94bD6h1auLjR6GZ1o=",
+      "message_type": "notification",
+      "message_timestamp": "2025-07-06T14:49:01.830829352Z",
+      "subscription_type": "channel.follow",
+      "subscription_version": "2"
+    },
+    "payload": {
+      "subscription": {
+        "id": "53cfd99f-4346-4544-a4c9-86e73450499e",
+        "status": "enabled",
+        "type": "channel.follow",
+        "version": "2",
+        "condition": {
+          "broadcaster_user_id": "29122457",
+          "moderator_user_id": "650749016"
+        },
+        "transport": {
+          "method": "websocket",
+          "session_id": "AgoQLqpAQgGdQdmCs-tbeI52bxIGY2VsbC1j"
+        },
+        "created_at": "2025-07-06T14:44:47.842876187Z",
+        "cost": 0
+      },
+      "event": {
+        "user_id": "650749016",
+        "user_login": "gunlinux_bot",
+        "user_name": "gunlinux_bot",
+        "broadcaster_user_id": "29122457",
+        "broadcaster_user_login": "gunlinux",
+        "broadcaster_user_name": "gunlinux",
+        "followed_at": "2025-07-06T14:49:01.830817278Z"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "message_id": "vEKcTK9GogX1qxyADMGJP-ZdhGB84pVwJUxeNblTspU=",
+      "message_type": "notification",
+      "message_timestamp": "2025-07-06T15:21:20.52017606Z",
+      "subscription_type": "channel.raid",
+      "subscription_version": "1"
+    },
+    "payload": {
+      "subscription": {
+        "id": "0445cbe1-e94d-4acc-a59d-6d3c039dea55",
+        "status": "enabled",
+        "type": "channel.raid",
+        "version": "1",
+        "condition": {
+          "from_broadcaster_user_id": "",
+          "to_broadcaster_user_id": "29122457"
+        },
+        "transport": {
+          "method": "websocket",
+          "session_id": "AgoQu3XPwT-KQ1yAfWuIqBXeyBIGY2VsbC1j"
+        },
+        "created_at": "2025-07-06T15:19:30.561267709Z",
+        "cost": 0
+      },
+      "event": {
+        "from_broadcaster_user_id": "650749016",
+        "from_broadcaster_user_login": "gunlinux_bot",
+        "from_broadcaster_user_name": "gunlinux_bot",
+        "to_broadcaster_user_id": "29122457",
+        "to_broadcaster_user_login": "gunlinux",
+        "to_broadcaster_user_name": "gunlinux",
+        "viewers": 1
+      }
+    }
+  },
+
+  {
+    "metadata":{
+      "message_id":"tBushYjFXTlMF5SVj7kYMI1tfpO_Cot4DCq4CbhJH_w=",
+      "message_type":"notification",
+      "message_timestamp":"2025-07-07T16:09:10.646084562Z",
+      "subscription_type":"channel.channel_points_custom_reward_redemption.add",
+      "subscription_version":"1"
+    },
+    "payload":{
+      "subscription":{
+        "id":"8ffd4a7d-01ff-4185-9379-839843367ffb",
+        "status":"enabled",
+        "type":"channel.channel_points_custom_reward_redemption.add",
+        "version":"1",
+        "condition":{
+          "broadcaster_user_id":"29122457",
+          "reward_id":""
+        },
+        "transport":{
+          "method":"websocket",
+          "session_id":"AgoQyXqxD7aQQjaXchmsqPBaRRIGY2VsbC1j"
+        },
+        "created_at":"2025-07-07T16:09:04.487615987Z",
+        "cost":0
+      },
+      "event":{
+        "broadcaster_user_id":"29122457",
+        "broadcaster_user_login":"gunlinux",
+        "broadcaster_user_name":"gunlinux",
+        "id":"486749da-8d33-4dee-82ad-d18097df18c7",
+        "user_id":"29122457",
+        "user_login":"gunlinux",
+        "user_name":"gunlinux",
+        "user_input":"",
+        "status":"unfulfilled",
+        "redeemed_at":"2025-07-07T16:09:10.625659896Z",
+        "reward":{
+          "id":"7fcd8c38-86d5-4467-ab9c-b207606a5a80",
+          "title":"flashback",
+          "prompt":"old days",
+          "cost":1
+        }
+      }
+    }
+  },
+
+  {
+    "metadata":{
+      "message_id":"IlpGLEtdMcQQK0Wh8pEMh7f-sHnis77ixSlI9BtBg1o=",
+      "message_type":"notification",
+      "message_timestamp":"2025-07-06T14:17:31.061622721Z",
+      "subscription_type":"channel.subscribe",
+      "subscription_version":"1"
+    },
+    "payload":{
+      "subscription":{
+        "id":"bf075001-34d8-44c2-b7d3-865a5b12b8af",
+        "status":"enabled",
+        "type":"channel.chat.message",
+        "version":"1",
+        "condition":{
+          "broadcaster_user_id":"29122457",
+          "user_id":"650749016"
+        },
+        "transport":{
+          "method":"websocket",
+          "session_id":"AgoQA9Eeagw9RZGbPujnUtkxOBIGY2VsbC1j"
+        },
+        "created_at":"2025-07-06T14:17:21.609873115Z",
+        "cost":0
+      },
+      "event":{
+        "user_id": "1234",
+        "user_login": "cool_user",
+        "user_name": "Cool_User",
+        "tier": "1000",
+        "message": {
+          "text": "Love the stream! FevziGG"
+        },
+        "cumulative_months": 15,
+        "streak_months": 1,
+        "duration_months": 6
+      }
+    }
+  },
+
+  {
+    "metadata":{
+      "message_id":"IlpGLEtdMcQQK0Wh8pEMh7f-sHnis77ixSlI9BtBg1o=",
+      "message_type":"notification",
+      "message_timestamp":"2025-07-06T14:17:31.061622721Z",
+      "subscription_type":"channel.subscription.message",
+      "subscription_version":"1"
+    },
+    "payload":{
+      "subscription":{
+        "id":"bf075001-34d8-44c2-b7d3-865a5b12b8af",
+        "status":"enabled",
+        "type": "channel.subscription.message",
+        "version":"1",
+        "condition":{
+          "broadcaster_user_id":"29122457",
+          "user_id":"650749016"
+        },
+        "transport":{
+          "method":"websocket",
+          "session_id":"AgoQA9Eeagw9RZGbPujnUtkxOBIGY2VsbC1j"
+        },
+        "created_at":"2025-07-06T14:17:21.609873115Z",
+        "cost":0
+      },
+      "event": {
+        "user_id": "1234",
+        "user_login": "cool_user",
+        "user_name": "Cool_User",
+        "broadcaster_user_id": "1337",
+        "broadcaster_user_login": "cooler_user",
+        "broadcaster_user_name": "Cooler_User",
+        "tier": "1000",
+        "message": {
+            "text": "Love the stream! FevziGG",
+            "emotes": [
+                {
+                    "begin": 23,
+                    "end": 30,
+                    "id": "302976485"
+                }
+            ]
+        },
+        "cumulative_months": 15,
+        "streak_months": 1,
+        "duration_months": 6
+      }
+    }
+  }
+
+]

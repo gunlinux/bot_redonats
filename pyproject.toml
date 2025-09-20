@@ -52,11 +52,18 @@ check_untyped_defs = true
 ignore = ["tests"]
 reportOptionalCall = false
 reportUnusedCallResult = false
-# enable?
 reportUnannotatedClassAttribute = false
 reportExplicitAny = false
 reportAny = false
+typeCheckingMode = "basic"
 
 [tool.uv.sources]
 requeue = { git = "https://github.com/gunlinux/requeue" }
+
+[tool.pytest.ini_options]
+# Add pytest-asyncio plugin
+addopts = "-p pytest_asyncio"
+# Specify the asyncio backend (optional, defaults to 'auto')
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 

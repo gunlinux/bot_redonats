@@ -27,7 +27,7 @@ class DonatEventHandler:
         else:
             logger.error('Cannot send message: sender is not initialized')
 
-    async def on_message(self, message: QueueMessage) -> QueueMessage | None:
+    async def on_message(self, message: QueueMessage) -> QueueMessage:
         logger.debug('Processing new event from queue')
 
         try:
@@ -35,6 +35,8 @@ class DonatEventHandler:
         except Exception as e:  # noqa: BLE001
             logger.critical('FAILED TO PROCESS MESSAGE %s %s ', message, e)
             return message
+        message.finish()
+        return message
 
     async def handle_event(self, event: QueueEvent) -> None:
         if event.event_type == DonationAlertTypes.DONATION.name:

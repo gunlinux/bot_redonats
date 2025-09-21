@@ -1,0 +1,19 @@
+[Unit]
+Description=Gunlinuxbot Donats getter Service
+After=network.target
+
+[Service]
+User=loki
+WorkingDirectory=/home/loki/projects/bot/bot_redonats
+ExecStart=/home/loki/.local/bin/uv run donats_getter.py
+Restart=always
+Environment="PATH=/usr/local/bin:/usr/bin:/bin:/home/loki/.local/bin"
+Environment="SSL_CERT_FILE=/home/loki/cacert.pem"
+Environment="REQUESTS_CA_BUNDLE=/home/loki/cacert.pem"
+
+
+
+
+[Install]
+WantedBy=multi-user.target
+

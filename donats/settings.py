@@ -9,7 +9,7 @@ load_dotenv()
 redis_url: str = os.environ.get('REDIS_URL', 'redis://127.0.0.1/2')
 twitch_redis_url: str = redis_url
 donats_redis_url: str = redis_url
-local_events_redis_url: str = os.environ.get('REDIS_URL', 'redis://gunlinux.ru/1')
+local_events_redis_url: str = os.environ.get('REDIS_URL', 'redis://gunlinux.ru/2')
 
 # Beer consumer
 BEER_URL: str = os.environ.get('BEER_URL', 'http://127.0.0.1:6016/donate')

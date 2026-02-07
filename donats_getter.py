@@ -6,7 +6,7 @@ import typing
 from donats.donats import DonatApi
 from donats.models import BillingSystem, AlertEvent
 from donats import settings
-from donats.utils import logger_setup
+from donats.utils import logger_setup, get_currencies
 
 from requeue.requeue import Queue
 from requeue.rredis import RedisConnection
@@ -18,9 +18,20 @@ logger = logger_setup(__name__)
 logger.info('Donats getter service started')
 
 
+def recal_amount(event: AlertEvent, currencies: dict[str, float], default='RUB'):
+    if event.currency == default:
+        return event
+    pair = f'{event.currency}{default}'
+    if pair in currencies:
+        event.amount = event.amount * currencies.get('pair', 1)
+        event.currency = default
+    return event
+
+
 async def init_process(
     queue: Queue,
     redis_connection: RedisConnection,
+    currencies: dict[str, float],
 ) -> Callable[[AlertEvent], Coroutine[typing.Any, typing.Any, None]]:
     work_queue: Queue = queue
     events_queue = Queue(name=settings.LOCAL_EVENTS, connection=redis_connection)
@@ -38,6 +49,9 @@ async def init_process(
             return
         processed.append(message.id)
 
+        if message.billing_system != BillingSystem.TWITCH:
+            recal_amount(event=message, currencies=currencies)
+
         new_message: QueueMessage = message.map_to_queue_message(source='donats_getter')
         if new_message.data.billing_system == BillingSystem.TWITCH:
             # ignoring twitch events
@@ -54,11 +68,14 @@ async def init_process(
 async def main() -> None:
     logger.info('Initializing donats getter service')
     logger.info('Redis URL: %s', settings.donats_redis_url)
+    currencies = get_currencies(settings.CURRENCIES)
     async with RedisConnection(settings.donats_redis_url) as redis_connection:
         queue = Queue(name=settings.DONATS_EVENTS, connection=redis_connection)
 
         handler = await init_process(
-            queue, typing.cast('RedisConnection', redis_connection)
+            queue,
+            typing.cast('RedisConnection', redis_connection),
+            currencies=currencies,
         )
         bot = DonatApi(token=settings.DA_ACCESS_TOKEN, handler=handler)
         while True:

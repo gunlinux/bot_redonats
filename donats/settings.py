@@ -37,10 +37,4 @@ DONATS_EVENTS = 'da_events'
 TWITCH_OUT = 'twitch_out'
 TWITCH_EVENTS = 'retwitch_mssgs'
 
-
-currencies: dict[str, float] = {
-    'USD': 80,
-    'RUB': 1,
-    'EUR': 90,
-    'POINTS': 1,
-}
+CURRENCIES = 'currencies.json'

@@ -12,7 +12,7 @@ dependencies = [
     "python-socketio>=5.11.4",
     "sentry-sdk==0.10.2",
     "aiohttp>=3.12.15",
-    "requeue>=3.0.0",
+    "requeue>=5.0.0",
 ]
 
 [dependency-groups]

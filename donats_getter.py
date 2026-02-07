@@ -23,7 +23,7 @@ def recal_amount(event: AlertEvent, currencies: dict[str, float], default='RUB')
         return event
     pair = f'{event.currency}{default}'
     if pair in currencies:
-        event.amount = event.amount * currencies.get('pair', 1)
+        event.amount = event.amount * currencies.get(pair, 1)
         event.currency = default
     return event
 
@@ -50,7 +50,8 @@ async def init_process(
         processed.append(message.id)
 
         if message.billing_system != BillingSystem.TWITCH:
-            recal_amount(event=message, currencies=currencies)
+            message = recal_amount(event=message, currencies=currencies)
+            logger.critical('after recal %s', message)
 
         new_message: QueueMessage = message.map_to_queue_message(source='donats_getter')
         if new_message.data.billing_system == BillingSystem.TWITCH:

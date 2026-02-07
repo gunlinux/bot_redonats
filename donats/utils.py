@@ -1,5 +1,9 @@
 import logging
 import os
+import json
+import typing
+from pathlib import Path
+
 import sentry_sdk
 from sentry_sdk.integrations.logging import LoggingIntegration
 from dotenv import load_dotenv
@@ -67,3 +71,8 @@ def logger_setup(name: str) -> logging.Logger:
         logger.addHandler(file_log_handler)
 
     return logger
+
+
+def get_currencies(file: str) -> dict[str, float]:
+    with Path.open(Path(file), 'r', encoding='utf-8') as f:
+        return typing.cast('dict[str, float]', json.load(f))

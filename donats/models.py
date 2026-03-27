@@ -23,7 +23,7 @@ class DonationAlertTypes(Enum):
 class AlertEvent:
     id: int
     alert_type: int
-    billing_system: str
+    billing_system: str | None
     username: str | None
     amount: float
     amount_formatted: str

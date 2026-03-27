@@ -6,7 +6,7 @@ from donats.models import AlertEvent
 class AlertEventSchema(Schema):
     id = fields.Int(required=True)
     alert_type = fields.Int(required=True)
-    billing_system = fields.Str()
+    billing_system = fields.Str(allow_none=True)
     username = fields.Str(allow_none=True)
     amount = fields.Float()
     amount_formatted = fields.Str()

@@ -2,6 +2,7 @@ import asyncio
 from collections import deque
 from collections.abc import Callable, Coroutine
 import typing
+import sys
 
 from donats.donats import DonatApi
 from donats.models import BillingSystem, AlertEvent
@@ -25,6 +26,8 @@ def recal_amount(event: AlertEvent, currencies: dict[str, float], default='RUB')
     if pair in currencies:
         event.amount = event.amount * currencies.get(pair, 1)
         event.currency = default
+    else:
+        logger.warning('cant find currency pair %s', pair)
     return event
 
 
@@ -73,6 +76,10 @@ async def main() -> None:
     logger.info('Initializing donats getter service')
     logger.info('Redis URL: %s', settings.donats_redis_url)
     currencies = get_currencies(settings.CURRENCIES)
+    if not currencies:
+        logger.critical('cant load currencies')
+        sys.exit(1)
+
     async with RedisConnection(settings.donats_redis_url) as redis_connection:
         queue = Queue(name=settings.DONATS_EVENTS, connection=redis_connection)
 

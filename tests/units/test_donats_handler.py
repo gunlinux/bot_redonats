@@ -5,7 +5,6 @@ logger = logging.getLogger(name=__name__)
 
 from donats.handlers import DonatEventHandler
 from requeue.requeue import Queue
-from requeue.sender.sender import DummySender
 
 
 async def process(handler, data):
@@ -17,11 +16,8 @@ async def test_real_events(load_da_events: Queue):
     queue = load_da_events
     await queue.pop()
 
-    sender: DummySender = DummySender(
-        queue_name='twitch_out', connection=queue.connection
-    )
     donat_handler: DonatEventHandler = DonatEventHandler(
-        sender=sender,
+        sender=None,
         admin='gunlinux',
     )
 

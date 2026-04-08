@@ -11,6 +11,10 @@ twitch_redis_url: str = redis_url
 donats_redis_url: str = redis_url
 local_events_redis_url: str = os.environ.get('REDIS_URL', 'redis://gunlinux.ru/2')
 
+rabbit_url: str = os.environ.get('RABBIT_URL', 'amqp://user:password@localhost:5672/')
+rabbit_vhost: str = os.environ.get('RABBIT_VHOST', 'gunlinux_bot')
+rabbit_exchange: str = os.environ.get('RABBIT_EXCHANGE', 'donats_getter')
+
 # Beer consumer
 BEER_URL: str = os.environ.get('BEER_URL', 'http://127.0.0.1:6016/donate')
 

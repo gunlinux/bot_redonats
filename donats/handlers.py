@@ -2,7 +2,7 @@ import logging
 from enum import Enum
 
 from requeue.fstream.models import FQueueMessage, FQueueEvent
-from requeue.sender.sender import SenderAbc
+from requeue.sender.sender import SenderABC
 
 
 logger = logging.getLogger(__name__)
@@ -17,7 +17,7 @@ class DonationAlertTypes(Enum):
 
 
 class DonatEventHandler:
-    def __init__(self, sender: SenderAbc | None, admin: str | None) -> None:
+    def __init__(self, sender: SenderABC | None, admin: str | None) -> None:
         self.admin = admin
         self.sender = sender
 

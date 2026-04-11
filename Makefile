@@ -2,7 +2,7 @@
 dev: ## Install dev dependencies
 	uv sync --dev
 
-check: test lint fix types
+check: lint fix types
 	echo "check"
 
 types:

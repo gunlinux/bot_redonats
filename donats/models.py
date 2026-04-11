@@ -3,7 +3,7 @@ from enum import Enum, StrEnum
 
 import typing
 
-from requeue.models import QueueMessage, QueueEvent
+from requeue.fstream.models import FQueueEvent, FQueueMessage
 
 
 class BillingSystem(StrEnum):
@@ -39,12 +39,12 @@ class AlertEvent:
     def get_event_type(self) -> str:
         return DonationAlertTypes(self.alert_type).name
 
-    def map_to_queue_message(self, source='donats_getter') -> QueueMessage:
+    def map_to_fastq_message(self, source='donats_getter') -> FQueueMessage:
         event_type = self.get_event_type()
-        return QueueMessage(
+        return FQueueMessage(
             event=event_type,
             source=source,
-            data=QueueEvent(
+            data=FQueueEvent(
                 event_type=event_type,
                 billing_system=self.billing_system,
                 user_name=self.username,

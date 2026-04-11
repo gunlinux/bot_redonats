@@ -1,8 +1,8 @@
 import logging
 from enum import Enum
 
-from requeue.models import QueueMessage, QueueEvent
-from requeue.sender.sender import SenderAbc
+from requeue.fstream.models import FQueueMessage, FQueueEvent
+from requeue.sender.sender import SenderABC
 
 
 logger = logging.getLogger(__name__)
@@ -17,7 +17,7 @@ class DonationAlertTypes(Enum):
 
 
 class DonatEventHandler:
-    def __init__(self, sender: SenderAbc | None, admin: str | None) -> None:
+    def __init__(self, sender: SenderABC | None, admin: str | None) -> None:
         self.admin = admin
         self.sender = sender
 
@@ -27,18 +27,15 @@ class DonatEventHandler:
         else:
             logger.error('Cannot send message: sender is not initialized')
 
-    async def on_message(self, message: QueueMessage) -> QueueMessage:
+    async def on_message(self, message: FQueueMessage) -> None:
         logger.debug('Processing new event from queue')
 
         try:
             await self.handle_event(message.data)
         except Exception as e:  # noqa: BLE001
             logger.critical('FAILED TO PROCESS MESSAGE %s %s ', message, e)
-            return message
-        message.finish()
-        return message
 
-    async def handle_event(self, event: QueueEvent) -> None:
+    async def handle_event(self, event: FQueueEvent) -> None:
         if event.event_type == DonationAlertTypes.DONATION.name:
             await self._donation(event)
             return
@@ -53,7 +50,7 @@ class DonatEventHandler:
 
         logger.warning('handle_event not implemented yet %s', event)
 
-    async def _donation(self, event: QueueEvent) -> None:
+    async def _donation(self, event: FQueueEvent) -> None:
         logger.info('donat.event _donation')
         if event.user_name is None:
             event.user_name = 'anonym'
@@ -61,12 +58,12 @@ class DonatEventHandler:
             {event.amount} {event.currency} | {event.message}"""
         await self.chat(mssg_text)
 
-    async def _follow(self, event: QueueEvent) -> None:
+    async def _follow(self, event: FQueueEvent) -> None:
         logger.info('donat.event _follow')
         mssg_text = f'@gunlinux @{event.user_name} started follow auf'
         await self.chat(mssg_text)
 
-    async def _subscribe(self, event: QueueEvent) -> None:
+    async def _subscribe(self, event: FQueueEvent) -> None:
         logger.info('donat.event _subscribe (youtube?)')
         mssg_text = f'@gunlinux @{event.user_name} _subscribed on youtube <3 auf'
         await self.chat(mssg_text)

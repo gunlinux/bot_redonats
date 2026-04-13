@@ -11,7 +11,7 @@ class AlertEventSchema(Schema):
     amount = fields.Float()
     amount_formatted = fields.Str()
     currency = fields.Str()
-    message = fields.Str()
+    message = fields.Str(allow_none=True)
     # valdate as date???
     date_created = fields.Str()
     _is_test_alert = fields.Bool()

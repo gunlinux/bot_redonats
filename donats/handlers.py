@@ -54,7 +54,7 @@ class DonatEventHandler:
         logger.info('donat.event _donation')
         if event.user_name is None:
             event.user_name = 'anonym'
-        mssg_text = f"""{self.admin} {event.user_name} пожертвовал
+        mssg_text = f"""@{self.admin} {event.user_name} пожертвовал
             {event.amount} {event.currency} | {event.message}"""
         await self.chat(mssg_text)
 

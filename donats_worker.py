@@ -3,10 +3,10 @@ import asyncio
 from donats.handlers import DonatEventHandler
 from donats import settings
 from donats.utils import logger_setup
-from requeue.sender.sender import Sender
+from donats.sender import Sender
 
 from faststream.rabbit import RabbitBroker
-from requeue.fstream.consumer import RabbitConsumer
+from donats.consumer import RabbitConsumer
 
 
 logger = logger_setup(__name__)

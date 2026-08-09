@@ -14,7 +14,6 @@ dependencies = [
     "aiohttp>=3.12.15",
     "faststream[rabbit]>=0.6.7",
     "pydantic>=2.12.5",
-    "requeue>=0.7.0",
 ]
 
 [dependency-groups]
@@ -59,8 +58,6 @@ reportExplicitAny = false
 reportAny = false
 typeCheckingMode = "basic"
 
-[tool.uv.sources]
-requeue = { git = "https://github.com/gunlinux/requeue" }
 
 [tool.pytest.ini_options]
 # Add pytest-asyncio plugin
@@ -68,4 +65,5 @@ addopts = "-p pytest_asyncio"
 # Specify the asyncio backend (optional, defaults to 'auto')
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+pythonpath = ["."]
 

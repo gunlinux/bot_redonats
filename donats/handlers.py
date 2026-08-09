@@ -1,8 +1,8 @@
 import logging
 from enum import Enum
 
-from requeue.fstream.models import FQueueMessage, FQueueEvent
-from requeue.sender.sender import SenderABC
+from donats.queue_models import FQueueMessage, FQueueEvent
+from donats.sender import SenderProtocol
 
 
 logger = logging.getLogger(__name__)
@@ -17,7 +17,7 @@ class DonationAlertTypes(Enum):
 
 
 class DonatEventHandler:
-    def __init__(self, sender: SenderABC | None, admin: str | None) -> None:
+    def __init__(self, sender: SenderProtocol | None, admin: str | None) -> None:
         self.admin = admin
         self.sender = sender
 
@@ -32,8 +32,9 @@ class DonatEventHandler:
 
         try:
             await self.handle_event(message.data)
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             logger.critical('FAILED TO PROCESS MESSAGE %s %s ', message, e)
+            raise
 
     async def handle_event(self, event: FQueueEvent) -> None:
         if event.event_type == DonationAlertTypes.DONATION.name:

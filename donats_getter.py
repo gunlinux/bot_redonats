@@ -10,11 +10,11 @@ from donats import settings
 from donats.utils import logger_setup, get_currencies
 
 from faststream.rabbit import RabbitBroker, RabbitExchange
-from requeue.fstream.publisher import Publisher
+from donats.publisher import Publisher
 
 
 if typing.TYPE_CHECKING:
-    from requeue.fstream.models import FQueueMessage
+    from donats.queue_models import FQueueMessage
 
 logger = logger_setup(__name__)
 logger.info('Donats getter service started')

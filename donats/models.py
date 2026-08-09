@@ -3,7 +3,7 @@ from enum import Enum, StrEnum
 
 import typing
 
-from requeue.fstream.models import FQueueEvent, FQueueMessage
+from donats.queue_models import FQueueEvent, FQueueMessage
 
 
 class BillingSystem(StrEnum):

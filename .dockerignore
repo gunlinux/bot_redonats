@@ -1,0 +1,16 @@
+.git
+.venv
+__pycache__
+*.pyc
+.env
+currencies.json
+*.log
+.pytest_cache
+.ruff_cache
+tests
+services
+.github
+Makefile
+AGENTS.md
+.gitignore
+plan.md

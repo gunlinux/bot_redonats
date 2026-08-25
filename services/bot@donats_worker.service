@@ -1,17 +1,14 @@
 [Unit]
 Description=Gunlinuxbot donats Worker Service
-After=network.target
+After=network.target docker.service
+Requires=docker.service
 
 [Service]
-User=loki
-WorkingDirectory=/home/loki/projects/bot/bot_redonats
-ExecStart=/home/loki/.local/bin/uv run donats_worker.py
 Restart=always
-Environment="PATH=/usr/local/bin:/usr/bin:/bin:/home/loki/.local/bin"
-Environment="SSL_CERT_FILE=/home/loki/cacert.pem"
-Environment="REQUESTS_CA_BUNDLE=/home/loki/cacert.pem"
-
+RestartSec=5
+ExecStartPre=-/usr/bin/docker rm -f donats-worker
+ExecStart=/usr/bin/docker run --rm --name donats-worker --network host --env-file /home/loki/projects/bot/bot_redonats/.env gunlinuxloki/bot_redonats:@IMAGE_TAG@ uv run --no-sync donats_worker.py
+ExecStop=/usr/bin/docker stop donats-worker
 
 [Install]
 WantedBy=multi-user.target
-

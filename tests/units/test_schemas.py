@@ -30,8 +30,15 @@ def test_centrifugo_donation_maps_to_alert_event() -> None:
     assert event._is_test_alert is False
 
 
-def test_centrifugo_unknown_alert_name_rejected() -> None:
-    payload = {**CENTRIFUGO_DONATION, 'name': 'alien_invasion'}
+def test_centrifugo_donor_name_not_treated_as_alert_type() -> None:
+    payload = {**CENTRIFUGO_DONATION, 'name': 'Some Donor', 'username': None}
+    event = AlertEventSchema().load(payload)
+    assert event.alert_type == 1
+    assert event.username == 'Some Donor'
+
+
+def test_centrifugo_payload_missing_id_rejected() -> None:
+    payload = {k: v for k, v in CENTRIFUGO_DONATION.items() if k != 'id'}
     with pytest.raises(ValidationError):
         AlertEventSchema().load(payload)
 

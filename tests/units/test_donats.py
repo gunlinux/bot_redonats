@@ -106,6 +106,62 @@ async def test_read_loop_handles_protobuf_style_publication() -> None:
     handler.assert_awaited_once()
 
 
+async def test_read_loop_parses_da_result_wrapped_publication() -> None:
+    handler = AsyncMock()
+    api = DonatApi(token='token', handler=handler)
+    donation = {
+        'id': 189804356,
+        'name': 'Donations',
+        'username': 'test',
+        'message': 'test',
+        'message_type': 'text',
+        'payin_system': None,
+        'amount': 555,
+        'currency': 'RUB',
+        'is_shown': 0,
+        'amount_in_user_currency': 555,
+        'recipient_name': 'gunlinux',
+        'recipient': {'user_id': 5116810},
+        'created_at': '2026-08-26 07:33:34',
+        'shown_at': None,
+        'reason': 'default',
+    }
+    frame = {
+        'result': {
+            'channel': '$alerts:donation_1',
+            'data': {'seq': 227, 'data': donation},
+        }
+    }
+    ws = _FakeWs([json.dumps(frame)])
+
+    await api._read_loop(ws)
+
+    handler.assert_awaited_once()
+    event = handler.await_args.args[0]
+    assert event.id == 189804356
+    assert event.amount == 555
+    assert event.currency == 'RUB'
+    assert event.alert_type == 1  # DONATION
+    assert event.username == 'test'
+
+
+async def test_read_loop_skips_join_push() -> None:
+    handler = AsyncMock()
+    api = DonatApi(token='token', handler=handler)
+    frame = {
+        'result': {
+            'type': 1,
+            'channel': '$alerts:donation_1',
+            'data': {'info': {'user': 'Client:14474', 'client': 'abc-123'}},
+        }
+    }
+    ws = _FakeWs([json.dumps(frame)])
+
+    await api._read_loop(ws)
+
+    handler.assert_not_awaited()
+
+
 async def test_read_loop_raises_on_disconnect() -> None:
     api = DonatApi(token='token', handler=AsyncMock())
     ws = _FakeWs([json.dumps({'type': 32771, 'reason': 'expired'})])

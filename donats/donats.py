@@ -17,7 +17,7 @@ API_BASE = 'https://www.donationalerts.com/api/v1'
 
 _METHOD_SUBSCRIBE = 1
 _PUSH_PUBLICATION = 1
-_PUSH_PING = 7
+_PUSH_DISCONNECT_JSON = 7
 _PUSH_DISCONNECT = 32771
 
 
@@ -99,7 +99,7 @@ class DonatApi:
                 raise ConnectionError(message)
             if frame.get('id') is not None:
                 return frame
-            if not frame or frame.get('type') == _PUSH_PING:
+            if not frame:
                 await ws.send_str('{}')
 
     async def _read_loop(self, ws: aiohttp.ClientWebSocketResponse) -> None:
@@ -113,18 +113,24 @@ class DonatApi:
             frame = json.loads(text)
             if frame.get('id'):  # reply to our own command
                 continue
-            if 'disconnect' in frame or frame.get('type') == _PUSH_DISCONNECT:
+            # DonationAlerts wraps every server push in a top-level "result"
+            # field ({result: {channel, data}}), unlike the raw Centrifugo
+            # format where type/pub sit at the top level.
+            push = frame.get('result') or frame
+            if 'disconnect' in push or push.get('type') in (
+                _PUSH_DISCONNECT,
+                _PUSH_DISCONNECT_JSON,
+            ):
                 message = f'centrifugo disconnect: {frame}'
                 raise ConnectionError(message)
-            if frame.get('pub'):  # protobuf-style publication
-                payload = frame['pub'].get('data', frame['pub'])
+            if push.get('pub'):  # protobuf-style publication
+                payload = push['pub'].get('data', push['pub'])
                 await self._handle_donation(payload)
-            elif frame.get('type') == _PUSH_PUBLICATION:
-                publication = frame.get('data') or {}
-                payload = publication.get('data', publication)
-                await self._handle_donation(payload)
-            elif frame.get('type') == _PUSH_PING:
-                await ws.send_str('{}')
+            elif push.get('type') == _PUSH_PUBLICATION or 'channel' in push:
+                publication = push.get('data') or {}
+                payload = publication.get('data')
+                if isinstance(payload, dict):
+                    await self._handle_donation(payload)
 
     async def _handle_donation(self, payload: dict) -> None:
         logger.debug('new event %s', payload)

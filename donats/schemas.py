@@ -1,13 +1,6 @@
 import typing
-from marshmallow import Schema, fields, post_load, EXCLUDE, pre_load, ValidationError
+from marshmallow import Schema, fields, post_load, EXCLUDE, pre_load
 from donats.models import AlertEvent, DonationAlertTypes
-
-_ALERT_TYPES_BY_NAME = {
-    'donation': DonationAlertTypes.DONATION,
-    'custom_alert': DonationAlertTypes.CUSTOM_REWARD,
-    'follow': DonationAlertTypes.FOLLOW,
-    'subscribe': DonationAlertTypes.SUBSCRIBE,
-}
 
 
 class AlertEventSchema(Schema):
@@ -28,36 +21,32 @@ class AlertEventSchema(Schema):
 
     @pre_load
     def preload(self, data: dict[str, typing.Any], **_) -> dict[str, typing.Any]:
-        if 'name' in data:
-            # Centrifugo payload: {id, name, username, message, amount, currency,
-            # created_at, ...} — no alert_type/billing_system/date_created.
-            try:
-                alert_type = _ALERT_TYPES_BY_NAME[data['name']]
-            except KeyError:
-                message = f'unknown alert name: {data["name"]}'
-                raise ValidationError(message) from None
-            amount = data.get('amount', 0)
-            currency = data.get('currency', '')
-            return {
-                'id': data['id'],
-                'alert_type': alert_type.value,
-                'billing_system': None,
-                'username': data.get('username'),
-                'amount': amount,
-                'amount_formatted': f'{amount} {currency}'.strip(),
-                'currency': currency,
-                'message': data.get('message'),
-                'date_created': data.get('created_at'),
-                '_is_test_alert': data.get('is_test_alert', False),
-            }
-        if 'alert_type' not in data:
+        if 'alert_type' in data:
+            data['alert_type'] = (
+                int(data['alert_type'])
+                if isinstance(data['alert_type'], str)
+                else data['alert_type']
+            )
             return data
-        data['alert_type'] = (
-            int(data['alert_type'])
-            if isinstance(data['alert_type'], str)
-            else data['alert_type']
-        )
-        return data
+        # Centrifugo donation payload: {id, name, username, message, amount,
+        # currency, created_at, ...} — no alert_type/billing_system. The
+        # $alerts:donation_<user_id> channel only carries donations, so the
+        # event type is always DONATION. The "name" field is the donor's
+        # display name, not an event type.
+        amount = data.get('amount', 0)
+        currency = data.get('currency', '')
+        return {
+            'id': data.get('id'),
+            'alert_type': DonationAlertTypes.DONATION.value,
+            'billing_system': None,
+            'username': data.get('username') or data.get('name'),
+            'amount': amount,
+            'amount_formatted': f'{amount} {currency}'.strip(),
+            'currency': currency,
+            'message': data.get('message'),
+            'date_created': data.get('created_at'),
+            '_is_test_alert': data.get('is_test_alert', False),
+        }
 
     @post_load
     def make(self, data: dict[str, typing.Any], **_) -> AlertEvent:

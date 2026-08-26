@@ -128,7 +128,6 @@ All configuration is via environment variables (loaded by `python-dotenv` in `se
 | `SENTRY_DSN` | `""` | Both (Sentry error tracking) |
 | `LOG_LEVEL` | `DEBUG` | Both |
 | `LOG_FORMAT` | see `utils.py` | Both |
-| `FILE_LOG` | `gunlinuxbot.log` | Both |
 | `CURRENCIES` | `currencies.json` | Getter |
 | `TESTING` | `0` | Both (disables Sentry when set) |
 | `BEER_URL` | `http://127.0.0.1:6016/donate` | (unused in current code) |
@@ -139,7 +138,7 @@ All configuration is via environment variables (loaded by `python-dotenv` in `se
 - **Single quotes** for strings (enforced by ruff format).
 - **Line length** not enforced (E501 ignored).
 - **No docstrings** required (D rules ignored in ruff, no existing docstrings).
-- **Logging:** `logger_setup()` creates a logger with console + file output + optional Sentry. Use `logger.critical()` for important events, `logger.debug()` for trace-level.
+- **Logging:** `logger_setup()` creates a logger with console output + optional Sentry. Use `logger.critical()` for important events, `logger.debug()` for trace-level.
 - **Currency conversion:** The getter converts all non-Twitch donations to RUB using `currencies.json` before publishing.
 - **Twitch events are silently dropped** in the getter (billing_system == TWITCH or None).
 - **Deduplication:** The getter uses a `deque(maxlen=100)` to track processed message IDs and reject duplicates.

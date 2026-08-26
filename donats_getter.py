@@ -56,10 +56,7 @@ async def init_process(
         new_message: FQueueMessage = message.map_to_fastq_message(
             source='donats_getter'
         )
-        if (
-            new_message.data.billing_system == BillingSystem.TWITCH
-            or new_message.data.billing_system is None
-        ):
+        if new_message.data.billing_system == BillingSystem.TWITCH:
             # ignoring twitch events
             logger.debug('ignoring message from twitch: %s', message)
             return

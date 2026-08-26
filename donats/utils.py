@@ -65,12 +65,6 @@ def logger_setup(name: str) -> logging.Logger:
     logger_handler.setFormatter(log_formatter)
     logger.addHandler(logger_handler)
 
-    file_log = os.getenv('FILE_LOG', 'gunlinuxbot.log')
-    if file_log:
-        file_log_handler = logging.FileHandler(file_log)
-        file_log_handler.setFormatter(log_formatter)
-        logger.addHandler(file_log_handler)
-
     return logger
 
 

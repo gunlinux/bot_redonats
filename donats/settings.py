@@ -15,6 +15,11 @@ BEER_URL: str = os.environ.get('BEER_URL', 'http://127.0.0.1:6016/donate')
 
 # Donats getter
 DA_ACCESS_TOKEN: str = os.environ.get('DA_ACCESS_TOKEN', '')
+DA_REFRESH_TOKEN: str = os.environ.get('DA_REFRESH_TOKEN', '')
+DA_TOKEN_EXPIRES_AT: str = os.environ.get('DA_TOKEN_EXPIRES_AT', '')
+DA_CLIENT_ID: str = os.environ.get('DA_CLIENT_ID', '')
+DA_CLIENT_SECRET: str = os.environ.get('DA_CLIENT_SECRET', '')
+DA_REDIRECT_URI: str = os.environ.get('DA_REDIRECT_URI', 'http://localhost:8080')
 
 # Retwitch
 RECLIENT_ID: str = os.environ.get('RECLIENT_ID', '')

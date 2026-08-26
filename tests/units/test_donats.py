@@ -44,6 +44,38 @@ class _FakeWs:
         self.sent.append(data)
 
 
+class _ReplyWs:
+    def __init__(self, frame: dict) -> None:
+        self._frame = frame
+        self.sent: list[str] = []
+
+    async def receive(self):
+        return _Msg(json.dumps(self._frame))
+
+    async def send_str(self, data: str) -> None:
+        self.sent.append(data)
+
+    async def send_json(self, data: dict) -> None:
+        self.sent.append(json.dumps(data))
+
+
+async def test_connect_returns_client_id_from_reply() -> None:
+    api = DonatApi(token='token', handler=AsyncMock())
+    ws = _ReplyWs({'id': 1, 'result': {'client': 'abc-123', 'version': '2.2.1'}})
+
+    client = await api._connect(ws, 'socket_token')
+
+    assert client == 'abc-123'
+
+
+async def test_connect_raises_without_client_id() -> None:
+    api = DonatApi(token='token', handler=AsyncMock())
+    ws = _ReplyWs({'id': 1, 'result': {'version': '2.2.1'}})
+
+    with pytest.raises(ConnectionError, match='missing client id'):
+        await api._connect(ws, 'socket_token')
+
+
 async def test_read_loop_pongs_ping_and_parses_publication() -> None:
     handler = AsyncMock()
     api = DonatApi(token='token', handler=handler)

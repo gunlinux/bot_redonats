@@ -1,6 +1,5 @@
 import json
 import logging
-import uuid
 from collections.abc import Callable, Coroutine
 from typing import Any, cast
 
@@ -28,9 +27,9 @@ class DonatApi:
             self.token = await get_access_token(session) or self.token
             user = await self._fetch_user(session)
             channel = f'$alerts:donation_{user["id"]}'
-            sub_token = await self._fetch_subscribe_token(session, channel)
             async with session.ws_connect(CENTRIFUGO_URL) as ws:
-                await self._connect(ws, user['socket_connection_token'])
+                client_id = await self._connect(ws, user['socket_connection_token'])
+                sub_token = await self._fetch_subscribe_token(session, channel, client_id)
                 await self._subscribe(ws, channel, sub_token)
                 await self._read_loop(ws)
 
@@ -48,13 +47,13 @@ class DonatApi:
             return (await resp.json())['data']
 
     async def _fetch_subscribe_token(
-        self, session: aiohttp.ClientSession, channel: str
+        self, session: aiohttp.ClientSession, channel: str, client: str
     ) -> str:
         headers = {
             'Authorization': f'Bearer {self.token}',
             'Content-Type': 'application/json',
         }
-        body = {'channels': [channel], 'client': str(uuid.uuid4())}
+        body = {'channels': [channel], 'client': client}
         async with session.post(
             f'{API_BASE}/centrifuge/subscribe', headers=headers, json=body
         ) as resp:
@@ -65,9 +64,16 @@ class DonatApi:
         self._msg_id += 1
         await ws.send_json({'id': self._msg_id, **command})
 
-    async def _connect(self, ws: aiohttp.ClientWebSocketResponse, socket_token: str) -> None:
+    async def _connect(
+        self, ws: aiohttp.ClientWebSocketResponse, socket_token: str
+    ) -> str:
         await self._send(ws, {'params': {'token': socket_token}})
-        await self._expect_reply(ws)
+        reply = await self._expect_reply(ws)
+        client = (reply.get('result') or {}).get('client')
+        if not client:
+            message = f'centrifugo connect missing client id: {reply}'
+            raise ConnectionError(message)
+        return client
 
     async def _subscribe(
         self, ws: aiohttp.ClientWebSocketResponse, channel: str, token: str
@@ -81,7 +87,7 @@ class DonatApi:
         )
         await self._expect_reply(ws)
 
-    async def _expect_reply(self, ws: aiohttp.ClientWebSocketResponse) -> None:
+    async def _expect_reply(self, ws: aiohttp.ClientWebSocketResponse) -> dict:
         while True:
             msg = await ws.receive()
             if msg.type != aiohttp.WSMsgType.TEXT:
@@ -92,7 +98,7 @@ class DonatApi:
                 message = f'centrifugo error: {frame["error"]}'
                 raise ConnectionError(message)
             if frame.get('id') is not None:
-                return
+                return frame
             if not frame or frame.get('type') == _PUSH_PING:
                 await ws.send_str('{}')
 

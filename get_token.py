@@ -22,10 +22,10 @@ class CallbackHandler(BaseHTTPRequestHandler):
             # implicit flow puts the token in the URL fragment, which is never
             # sent to the server — forward it via a query string redirect
             body = (
-                b"<script>"
-                b"const p = new URLSearchParams(location.hash.slice(1));"
+                b'<script>'
+                b'const p = new URLSearchParams(location.hash.slice(1));'
                 b"location.href = '/?' + p.toString();"
-                b"</script>"
+                b'</script>'
             )
         self.send_response(200)
         self.send_header('Content-Type', 'text/html; charset=utf-8')
@@ -43,16 +43,13 @@ def main() -> None:
     port = urlparse(redirect).port or 8080
 
     server = HTTPServer((host, port), CallbackHandler)
-    authorize_url = (
-        'https://www.donationalerts.com/oauth/authorize?'
-        + urlencode(
-            {
-                'client_id': settings.DA_CLIENT_ID,
-                'redirect_uri': redirect,
-                'response_type': 'token',
-                'scope': SCOPE,
-            }
-        )
+    authorize_url = 'https://www.donationalerts.com/oauth/authorize?' + urlencode(
+        {
+            'client_id': settings.DA_CLIENT_ID,
+            'redirect_uri': redirect,
+            'response_type': 'token',
+            'scope': SCOPE,
+        }
     )
     print(f'Open in browser and authorize:\n{authorize_url}\n')
     print(f'Waiting for the redirect to {redirect} ...')

@@ -28,7 +28,9 @@ async def test_get_access_token_refreshes_when_expired(monkeypatch) -> None:
     assert token == 'fresh-token'
 
 
-async def test_get_access_token_returns_stale_token_without_refresh(monkeypatch) -> None:
+async def test_get_access_token_returns_stale_token_without_refresh(
+    monkeypatch,
+) -> None:
     monkeypatch.setattr(settings, 'DA_ACCESS_TOKEN', 'stale-token')
     monkeypatch.setattr(settings, 'DA_TOKEN_EXPIRES_AT', '1')
     monkeypatch.setattr(settings, 'DA_REFRESH_TOKEN', '')

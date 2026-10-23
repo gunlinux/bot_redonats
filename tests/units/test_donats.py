@@ -98,7 +98,10 @@ async def test_read_loop_pongs_ping_and_parses_publication() -> None:
 async def test_read_loop_handles_protobuf_style_publication() -> None:
     handler = AsyncMock()
     api = DonatApi(token='token', handler=handler)
-    frame = {'id': 0, 'pub': {'channel': '$alerts:donation_1', 'data': CENTRIFUGO_DONATION}}
+    frame = {
+        'id': 0,
+        'pub': {'channel': '$alerts:donation_1', 'data': CENTRIFUGO_DONATION},
+    }
     ws = _FakeWs([json.dumps(frame)])
 
     await api._read_loop(ws)

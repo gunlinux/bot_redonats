@@ -17,6 +17,41 @@ CENTRIFUGO_DONATION = {
 }
 
 
+DONATIONS_ALERTS_PAYLOAD = {
+    'amount': 555,
+    'amount_in_user_currency': 555,
+    'created_at': '2026-10-23 17:16:39',
+    'currency': 'RUB',
+    'id': 192956291,
+    'is_shown': 1,
+    'message': 'test555',
+    'message_type': 'text',
+    'name': 'Donations',
+    'payin_system': None,
+    'reason': 'default',
+    'recipient': {
+        'avatar': 'https://example.com/avatar.png',
+        'code': 'gunlinux',
+        'name': 'gunlinux',
+        'user_id': 5116810,
+    },
+    'recipient_name': 'gunlinux',
+    'shown_at': None,
+    'username': 'test555',
+}
+
+
+def test_donations_alerts_payload_maps_to_alert_event() -> None:
+    event = AlertEventSchema().load(DONATIONS_ALERTS_PAYLOAD)
+    assert event.id == 192956291
+    assert event.alert_type == 1
+    assert event.username == 'test555'
+    assert event.amount == 555
+    assert event.currency == 'RUB'
+    assert event.message == 'test555'
+    assert event.date_created == '2026-10-23 17:16:39'
+
+
 def test_centrifugo_donation_maps_to_alert_event() -> None:
     event = AlertEventSchema().load(CENTRIFUGO_DONATION)
     assert event.id == 30530030

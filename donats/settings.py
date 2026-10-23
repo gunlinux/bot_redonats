@@ -10,6 +10,9 @@ rabbit_url: str = os.environ.get('RABBIT_URL', 'amqp://user:password@localhost:5
 rabbit_vhost: str = os.environ.get('RABBIT_VHOST', 'gunlinux_bot')
 rabbit_exchange: str = os.environ.get('RABBIT_EXCHANGE', 'donats_getter')
 
+# Incoming donation alerts (second RabbitMQ, vhost in URL path)
+rabbit_alerts: str = os.environ.get('RABBIT_ALERTS', rabbit_url)
+
 # Beer consumer
 BEER_URL: str = os.environ.get('BEER_URL', 'http://127.0.0.1:6016/donate')
 
@@ -37,7 +40,7 @@ scripts_path: str = 'local_events/scripts/'
 # QUEUES
 LOCAL_EVENTS = 'local_events'
 BEER_STAT = 'bs_donats'
-DONATS_EVENTS = 'da_events'
+DONATIONS_ALERTS = 'donations_alerts'
 TWITCH_OUT = 'twitch_out'
 TWITCH_EVENTS = 'retwitch_mssgs'
 

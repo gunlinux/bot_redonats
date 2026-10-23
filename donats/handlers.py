@@ -1,7 +1,10 @@
 import logging
 from enum import Enum
+from typing import Any, cast
 
-from donats.queue_models import FQueueMessage, FQueueEvent
+from donats.models import AlertEvent  # noqa: TC001
+from donats.queue_models import FQueueEvent
+from donats.schemas import AlertEventSchema
 from donats.sender import SenderProtocol
 
 
@@ -27,11 +30,14 @@ class DonatEventHandler:
         else:
             logger.error('Cannot send message: sender is not initialized')
 
-    async def on_message(self, message: FQueueMessage) -> None:
+    async def on_message(self, message: dict[str, Any]) -> None:
         logger.debug('Processing new event from queue')
 
         try:
-            await self.handle_event(message.data)
+            event = cast('AlertEvent', AlertEventSchema().load(message))
+            await self.handle_event(
+                event.map_to_fastq_message(source='donations_alerts').data
+            )
         except Exception as e:
             logger.critical('FAILED TO PROCESS MESSAGE %s %s ', message, e)
             raise

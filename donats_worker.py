@@ -14,16 +14,17 @@ logger.info('Donats worker service started')
 
 
 async def main() -> None:
-    broker = RabbitBroker(settings.rabbit_url, virtualhost=settings.rabbit_vhost)
-    sender = Sender(broker=broker, exchange_name=settings.TWITCH_OUT)
+    out_broker = RabbitBroker(settings.rabbit_url, virtualhost=settings.rabbit_vhost)
+    alerts_broker = RabbitBroker(settings.rabbit_alerts)
+    sender = Sender(broker=out_broker, exchange_name=settings.TWITCH_OUT)
     donat_handler: DonatEventHandler = DonatEventHandler(
         sender=sender,
         admin='gunlinux',
     )
     await RabbitConsumer(
-        broker=broker,
+        broker=alerts_broker,
         worker=donat_handler.on_message,
-        queue_name=settings.DONATS_EVENTS,
+        queue_name=settings.DONATIONS_ALERTS,
     ).consume()
 
 

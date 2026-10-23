@@ -29,7 +29,9 @@ class DonatApi:
             channel = f'$alerts:donation_{user["id"]}'
             async with session.ws_connect(CENTRIFUGO_URL) as ws:
                 client_id = await self._connect(ws, user['socket_connection_token'])
-                sub_token = await self._fetch_subscribe_token(session, channel, client_id)
+                sub_token = await self._fetch_subscribe_token(
+                    session, channel, client_id
+                )
                 await self._subscribe(ws, channel, sub_token)
                 await self._read_loop(ws)
 

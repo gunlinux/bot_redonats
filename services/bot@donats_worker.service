@@ -7,7 +7,7 @@ Requires=docker.service
 Restart=always
 RestartSec=5
 ExecStartPre=-/usr/bin/docker rm -f donats-worker
-ExecStart=/usr/bin/docker run --rm --name donats-worker --network host --env-file /home/loki/projects/bot/bot_redonats/.env gunlinuxloki/bot_redonats:@IMAGE_TAG@ uv run --no-sync donats_worker.py
+ExecStart=/usr/bin/docker run --rm --name donats-worker --network host --env-file /home/loki/projects/bot/bot_redonats/.env gunlinuxloki/bot_redonats:@IMAGE_TAG@
 ExecStop=/usr/bin/docker stop donats-worker
 
 [Install]

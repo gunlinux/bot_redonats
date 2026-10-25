@@ -10,8 +10,8 @@ WORKDIR /app
 
 COPY pyproject.toml uv.lock ./
 COPY donats/ donats/
-COPY donats_getter.py donats_worker.py ./
+COPY donats_worker.py ./
 
 RUN uv sync --frozen --no-dev
 
-CMD ["uv", "run", "--no-sync", "donats_getter.py"]
+CMD ["uv", "run", "--no-sync", "donats_worker.py"]

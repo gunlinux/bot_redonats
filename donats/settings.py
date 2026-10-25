@@ -8,21 +8,12 @@ load_dotenv()
 
 rabbit_url: str = os.environ.get('RABBIT_URL', 'amqp://user:password@localhost:5672/')
 rabbit_vhost: str = os.environ.get('RABBIT_VHOST', 'gunlinux_bot')
-rabbit_exchange: str = os.environ.get('RABBIT_EXCHANGE', 'donats_getter')
 
 # Incoming donation alerts (second RabbitMQ, vhost in URL path)
 rabbit_alerts: str = os.environ.get('RABBIT_ALERTS', rabbit_url)
 
 # Beer consumer
 BEER_URL: str = os.environ.get('BEER_URL', 'http://127.0.0.1:6016/donate')
-
-# Donats getter
-DA_ACCESS_TOKEN: str = os.environ.get('DA_ACCESS_TOKEN', '')
-DA_REFRESH_TOKEN: str = os.environ.get('DA_REFRESH_TOKEN', '')
-DA_TOKEN_EXPIRES_AT: str = os.environ.get('DA_TOKEN_EXPIRES_AT', '')
-DA_CLIENT_ID: str = os.environ.get('DA_CLIENT_ID', '')
-DA_CLIENT_SECRET: str = os.environ.get('DA_CLIENT_SECRET', '')
-DA_REDIRECT_URI: str = os.environ.get('DA_REDIRECT_URI', 'http://localhost:8080')
 
 # Retwitch
 RECLIENT_ID: str = os.environ.get('RECLIENT_ID', '')
@@ -43,5 +34,3 @@ BEER_STAT = 'bs_donats'
 DONATIONS_ALERTS = 'donations_alerts'
 TWITCH_OUT = 'twitch_out'
 TWITCH_EVENTS = 'retwitch_mssgs'
-
-CURRENCIES = 'currencies.json'

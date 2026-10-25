@@ -39,7 +39,7 @@ class AlertEvent:
     def get_event_type(self) -> str:
         return DonationAlertTypes(self.alert_type).name
 
-    def map_to_fastq_message(self, source='donats_getter') -> FQueueMessage:
+    def map_to_fastq_message(self, source='') -> FQueueMessage:
         event_type = self.get_event_type()
         return FQueueMessage(
             event=event_type,
